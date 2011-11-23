@@ -12,3 +12,7 @@ svg#svgimage {
     top: 0px;
     left: 30px;
 }
+
+div#manage_tools {
+    display: none;
+}
