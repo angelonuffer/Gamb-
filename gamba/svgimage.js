@@ -28,9 +28,12 @@ $(document).ready(function() {
             jQuery.window({
                 title: "Manage tools",
                 icon: "images/kcontrol-3.png",
-                content: $("div#manage_tools").html(),
+                content: $("div#manage_tools_wrapper").html(),
                 minimizable: false,
                 maximizable: false,
+            })
+            $("button#add_tool").click(function() {
+                $("div#manage_tools").append($("<input />").attr("type", "text"))
             })
         }
     )

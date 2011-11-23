@@ -13,6 +13,10 @@ svg#svgimage {
     left: 30px;
 }
 
-div#manage_tools {
+div#manage_tools_wrapper {
     display: none;
+}
+
+input[type=text] {
+    width: 100%;
 }
