@@ -1,0 +1,14 @@
+div#toolbar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 30px;
+    height: 100%;
+    background-color: #30372a;
+}
+
+svg#svgimage {
+    position: absolute;
+    top: 0px;
+    left: 30px;
+}
