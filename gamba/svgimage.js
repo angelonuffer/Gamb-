@@ -22,18 +22,15 @@ $(document).ready(function() {
         width: svg_image_width - 30,
     })
     var manage_tools = new Tool(
-        name = "Manage tools",
+        name = "Add tool",
         icon_url = "images/kcontrol-3.png",
         handler = function() {
             jQuery.window({
-                title: "Manage tools",
+                title: "Add tool",
                 icon: "images/kcontrol-3.png",
-                content: $("div#manage_tools_wrapper").html(),
+                content: $("div#add_tool").html(),
                 minimizable: false,
                 maximizable: false,
-            })
-            $("button#add_tool").click(function() {
-                $("div#manage_tools").append($("<input />").attr("type", "text"))
             })
         }
     )
