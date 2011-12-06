@@ -1,4 +1,4 @@
-function Tool(name, icon_url, handler) {
+function Tool(name, icon_url) {
     this.name = name
     this.icon = $("<img />")
     this.icon.attr({
@@ -7,12 +7,31 @@ function Tool(name, icon_url, handler) {
         height: "30px",
     })
     this.element = $("<div />")
+    this.element.addClass("tool")
     this.element.append(this.icon)
-    this.element.css({
-        cursor: "pointer",
-    })
-    this.element.click(handler)
     $("div#toolbar").append(this.element)
+}
+
+function ClickableTool(name, icon_url, handler) {
+    Tool.call(this, name, icon_url)
+    this.element.click(handler)
+}
+
+function SelectableTool(name, icon_url, select, unselect) {
+    Tool.call(this, name, icon_url)
+    this.select = function() {
+        jQuery.each(tools, function(index, tool) {
+            if (tool.element.hasClass("selected"))
+                tool.unselect()
+        })
+        $(this).addClass("selected")
+        select()
+    }
+    this.unselect = function() {
+        this.element.removeClass("selected")
+        unselect()
+    }
+    this.element.click(this.select)
 }
 
 $(document).ready(function() {
@@ -21,7 +40,8 @@ $(document).ready(function() {
     svg_image.css({
         width: svg_image_width - 30,
     })
-    var add_tool = new Tool(
+    tools = []
+    var add_tool = new ClickableTool(
         name = "Add tool",
         icon_url = "images/kcontrol-3.png",
         handler = function() {
@@ -36,11 +56,13 @@ $(document).ready(function() {
                 var path = $("input#tool_path")[1].value
                 jQuery.get(path, function(tool_text) {
                     var tool_object = eval("(" + tool_text + ")")
-                    var tool = new Tool(
+                    var tool = new SelectableTool(
                         name = tool_object.name,
                         icon_url = tool_object.icon,
-                        handler = tool_object.handler
+                        select = tool_object.select,
+                        unselect = tool_object.unselect
                     )
+                    tools.push(tool)
                 })
             })
         }

@@ -20,3 +20,20 @@ div#add_tool {
 input[type=text] {
     width: 100%;
 }
+
+div.tool {
+    cursor: pointer;
+}
+
+div.tool.selected {
+    background-color: gray;
+}
+
+div.tool img:hover {
+    -webkit-transform: scale(1.2);
+    -webkit-transition: all 400;
+}
+
+div.tool img {
+    -webkit-transition: all 400;
+}
