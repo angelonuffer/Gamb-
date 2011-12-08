@@ -8,15 +8,15 @@
         $("svg#svgimage").mousedown(function() {
             var svgNS = "http://www.w3.org/2000/svg"
             var rectangle = document.createElementNS(svgNS, "rect")
-            $(rectangle).attr({
-                x: event.pageX - 30,
-                y: event.pageY,
-            })
+            var initial_x = event.pageX - 30
+            var initial_y = event.pageY
             $(this).append(rectangle)
             $(document).mousemove(function() {
                 $(rectangle).attr({
-                    width: Math.abs(event.pageX - $(rectangle).attr("x") - 30),
-                    height: Math.abs(event.pageY - $(rectangle).attr("y")),
+                    x: ((event.pageX - 30 > initial_x) ? initial_x : event.pageX - 30),
+                    y: ((event.pageY > initial_y) ? initial_y : event.pageY),
+                    width: Math.abs(event.pageX - initial_x - 30),
+                    height: Math.abs(event.pageY - initial_y),
                 })
             })
             $("svg#svgimage").mouseup(function() {
