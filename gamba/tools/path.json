@@ -1,0 +1,41 @@
+{
+    name: "Path",
+    icon: "images/draw-path.png",
+    select: function() {
+        $("svg#svgimage").css({
+            cursor: "default"
+        })
+        $("svg#svgimage").mousedown(function() {
+            var svgNS = "http://www.w3.org/2000/svg"
+            var path = document.createElementNS(svgNS, "path")
+            $(path).attr({
+                d: "M" + (event.pageX - 30) + "," + event.pageY,
+                fill: "none"
+            })
+            $(path).css({
+                stroke: "black",
+                "stroke-width": 1
+            })
+            $(this).append(path)
+            $(document).mousemove(function() {
+                if ($(path).attr("d").indexOf("L") == -1)
+                    $(path).attr({
+                        d: $(path).attr("d") + " L" + (event.pageX - 30) + "," + event.pageY
+                    })
+                else
+                    $(path).attr({
+                        d: $(path).attr("d") + " " + (event.pageX - 30) + "," + event.pageY
+                    })
+            })
+            $("svg#svgimage").mouseup(function() {
+                $(document).unbind("mousemove")
+            })
+        })
+    },
+    unselect: function() {
+        $("svg#svgimage").unbind("mousedown")
+        $("svg#svgimage").css({
+            cursor: "auto"
+        })
+    }
+}
