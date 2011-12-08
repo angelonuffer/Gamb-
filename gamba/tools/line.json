@@ -1,0 +1,39 @@
+{
+    name: "Line",
+    icon: "images/draw-line-2.png",
+    select: function() {
+        $("svg#svgimage").css({
+            cursor: "crosshair"
+        })
+        $("svg#svgimage").mousedown(function() {
+            var svgNS = "http://www.w3.org/2000/svg"
+            var line = document.createElementNS(svgNS, "line")
+            $(line).attr({
+                x1: event.pageX - 30,
+                y1: event.pageY,
+                x2: event.pageX - 30,
+                y2: event.pageY,
+            })
+            $(line).css({
+                stroke: "black",
+                "stroke-width": 1
+            })
+            $(this).append(line)
+            $(document).mousemove(function() {
+                $(line).attr({
+                    x2: event.pageX - 30,
+                    y2: event.pageY,
+                })
+            })
+            $("svg#svgimage").mouseup(function() {
+                $(document).unbind("mousemove")
+            })
+        })
+    },
+    unselect: function() {
+        $("svg#svgimage").unbind("mousedown")
+        $("svg#svgimage").css({
+            cursor: "auto"
+        })
+    }
+}
