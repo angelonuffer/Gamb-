@@ -40,30 +40,35 @@ $(document).ready(function() {
     svg_image.css({
         width: svg_image_width - 30,
     })
+    var add_tool_action = function() {
+        var path = $("input#tool_path")[0].value
+        jQuery.get(path, function(tool_text) {
+            var tool_object = eval("(" + tool_text + ")")
+            var tool = new SelectableTool(
+                name = tool_object.name,
+                icon_url = tool_object.icon,
+                select = tool_object.select,
+                unselect = tool_object.unselect
+            )
+            tools.push(tool)
+        })
+    }
+    $("button#add_tool_button").click(add_tool_action)
+    $("input#tool_path").keyup(function() {
+        if (event.keyCode == 13)
+        {
+            add_tool_action()
+        }
+    })
     tools = []
     var add_tool = new ClickableTool(
         name = "Add tool",
         icon_url = "images/kcontrol-3.png",
         handler = function() {
-            jQuery.window({
+            $("div#add_tool").dialog({
                 title: "Add tool",
-                icon: "images/kcontrol-3.png",
-                content: $("div#add_tool").html(),
-                minimizable: false,
-                maximizable: false,
-            })
-            $("button#add_tool_button").click(function() {
-                var path = $("input#tool_path")[1].value
-                jQuery.get(path, function(tool_text) {
-                    var tool_object = eval("(" + tool_text + ")")
-                    var tool = new SelectableTool(
-                        name = tool_object.name,
-                        icon_url = tool_object.icon,
-                        select = tool_object.select,
-                        unselect = tool_object.unselect
-                    )
-                    tools.push(tool)
-                })
+                show: "blind",
+                hide: "blind"
             })
         }
     )
