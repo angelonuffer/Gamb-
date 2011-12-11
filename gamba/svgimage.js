@@ -1,37 +1,68 @@
+function Action(name, handler) {
+    var self = this
+    self.element = $("<button />").text(name)
+    self.element.button()
+    self.element.click(handler)
+}
+
 function Tool(name, icon_url) {
-    this.name = name
-    this.icon = $("<img />")
-    this.icon.attr({
+    var self = this
+    self.name = name
+    self.icon = $("<img />")
+    self.icon.attr({
         src: icon_url,
         width: "30px",
         height: "30px",
     })
-    this.element = $("<div />")
-    this.element.addClass("tool")
-    this.element.append(this.icon)
-    $("div#toolbar").append(this.element)
+    self.element = $("<div />")
+    self.element.addClass("tool")
+    self.element.append(self.icon)
+    self.menu = $("<div />")
+    var remove_action = new Action(
+        name = "remove",
+        handler = function() {
+            self.element.remove()
+        }
+    )
+    self.menu.append(remove_action.element)
+    self.menu.hide()
+    $(document.body).append(self.menu)
+    $(document).click(function() {
+        self.menu.hide()
+    })
+    self.element.contextmenu(function() {
+        self.menu.css({
+            position: "absolute",
+            left: event.pageX,
+            top: event.pageY
+        }).show()
+        return false
+    })
+    $("div#toolbar").append(self.element)
 }
 
 function ClickableTool(name, icon_url, handler) {
-    Tool.call(this, name, icon_url)
-    this.element.click(handler)
+    var self = this
+    Tool.call(self, name, icon_url)
+    self.element.click(handler)
 }
 
 function SelectableTool(name, icon_url, select, unselect) {
-    Tool.call(this, name, icon_url)
-    this.select = function() {
+    var self = this
+    Tool.call(self, name, icon_url)
+    self.select = function() {
         jQuery.each(tools, function(index, tool) {
             if (tool.element.hasClass("selected"))
                 tool.unselect()
         })
-        $(this).addClass("selected")
+        self.element.addClass("selected")
         select()
     }
-    this.unselect = function() {
-        this.element.removeClass("selected")
+    self.unselect = function() {
+        self.element.removeClass("selected")
         unselect()
     }
-    this.element.click(this.select)
+    self.element.click(self.select)
 }
 
 $(document).ready(function() {
@@ -72,4 +103,5 @@ $(document).ready(function() {
             })
         }
     )
+    add_tool.menu = $("<div />")
 })
